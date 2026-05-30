@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     
     <style>
       /* 設定密碼畫面的樣子：黑底白字，置中 */
@@ -35,22 +35,26 @@
 
     <script>
       // 點擊按鈕後的魔法邏輯
-      function unlockAR() {
-        var answer = document.getElementById("magic-word").value;
-        
-        if (answer === "1234") { // 👈 這裡可以改成你想要的密碼關鍵字！
-          // 密碼正確：把黑色密碼畫面丟掉
-          document.getElementById("lock-screen").style.display = "none";
-          
-          // 設定當相機「看到卡片」時，自動播放音樂
-          var cardTarget = document.querySelector('[mindar-image-target]');
-          cardTarget.addEventListener("targetFound", function() {
-            document.getElementById('my-sound').components.sound.playSound();
-          });
-        } else {
-          alert("❌ 咒語錯誤！再試一次！");
-        }
-      }
+function unlockAR() {
+    var answer = document.getElementById("magic-word").value;
+    
+    if (answer === "1234") {
+        document.getElementById("lock-screen").style.display = "none";
+
+        // 👇 在這裡預備音訊（利用按鈕點擊的時機）
+        var audio = new Audio('./card-music.mp3');
+        audio.load();
+
+        var cardTarget = document.querySelector('[mindar-image-target]');
+        cardTarget.addEventListener("targetFound", function() {
+            audio.currentTime = 0; // 從頭播放
+            audio.play();
+        });
+
+    } else {
+        alert("❌ 咒語錯誤！再試一次！");
+    }
+}
     </script>
   </body>
 </html>
